@@ -28,9 +28,17 @@ compatible with Python 3.x.
 import llc4320_on_nas as llc
 from numpy import datetime64
 sst=llc.load_llc4320_compressed_2d('Theta',k=0, #k=0 refers to the first layer, i.e., surface 
-                                time=datetime64.date(2011,10,10,1), 
+                                time=datetime(2011,10,10,1), 
                                 remapping=True, 
                                 retile=True)
+In [5]: len(sst)
+Out[5]: 2
+
+In [6]: sst[0].shape
+Out[6]: (12960, 8640)
+
+In [7]: sst[1].shape
+Out[7]: (8640, 12960)
 ```
 
 
