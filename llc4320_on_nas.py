@@ -205,32 +205,22 @@ def load_llc_grid(varn):
         The grid data associated with the specified variable. The type and structure of the returned data
         depend on the variable.
 
-    Raises:
-    -------
-    FileNotFoundError
-        If the HDF5 file does not exist at the specified path.
-
-    IOError
-        If the variable name does not exist in the HDF5 file.
-
     Examples:
     ---------
     # Load grid data for the 'Depth' variable
-    depth_grid = load_llc_grid('Depth')
+    yc = load_llc_grid('YC') #latitude at grid center
 
     # Load grid data for the 'Temperature' variable
-    temp_grid = load_llc_grid('Temperature')
+    xc = load_llc_grid('XC') #longitude at grid center
 
     Notes:
     ------
-    The function assumes the existence of an HDF5 file named 'grids.h5' in the output directory
-    specified by the 'paths' function of the 'popy' package. The exact location and structure
-    of this file should be known and consistent for the function to work as expected.
+    'grids.h5' was created from data in /u/dmenemen/llc_4320/grid/.
     """
-    import popy
-    d = paths(4320)
-    fn = d.output_dir + 'grids.h5'
-    return popy.io.loadh5(fn, varn)
+    
+    import xarray as xr 
+    with xr.open_dataset(f'/nobackup/jwang23/llc4320_stripe/grid/{varn}.h5') as dd:
+        return dd[varn]
 
 
 def load_c1440_llc2160_mitgcm(varn, step, pth='', 
