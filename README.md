@@ -40,5 +40,30 @@ In [7]: sst[1].shape
 Out[7]: (8640, 12960)
 ```
 
+```python
+import llc4320_on_nas as llc 
+import matplotlib.pylab as plt 
+from datetime import datetime 
+import numpy as np 
 
+t0 = datetime(2011,10,10,12)
+sst = llc.load_llc4320_compressed_2d('Theta',k=0,time=t0,retile=True)
+display(len(sst),sst[0].shape,sst[1].shape)
 
+# combine tiles
+# Here is a layout of llc grid: https://podaac.jpl.nasa.gov/Podaac/thumbnails/ECCO_L4_OBP_LLC0090GRID_MONTHLY_V4R4.jpg
+# sst[0] includes tiles 1-6, sst[1] include tiles 8-13 (rotated)
+# Each tile has 4320x4320 points. sst[0] has 3x2 tiles. sst[1] has 2x3 tiles. 
+# The following line provides a global coverage without the Arctic (tile 7)
+# The combined array has shape (12960, 17280), the same as the two coordinates xc (lon), yc (lat) below. 
+sst = np.c_[sst[0], sst[1].T[:,::-1]] 
+
+display(sst.shape) 
+
+xc = llc.load_llc_grid('XC') #longitude shape (12960, 17280)
+yc = llc.load_llc_grid('YC') #latitude shape (12960, 17280)
+
+display(xc.shape,yc.shape)
+
+plt.pcolor(xc[::96,::96],yc[::96,::96],sst[::96,::96]) #skip values to speed up rendering
+```
