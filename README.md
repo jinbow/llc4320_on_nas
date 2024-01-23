@@ -15,7 +15,9 @@ To use `llc4320_on_nas.py`, you need to have Python installed on your system.
 ### Steps:
 1. Clone the repository or download the script:
 
-  git clone git@github.com:jinbow/llc4320_on_pleiades.git
+```bash 
+git clone git@github.com:jinbow/llc4320_on_nas.git
+```
 
   or just download `llc4320_on_nas.py` and put it in your working directory or put it somewhere included in $PYTHONPATH. 
 
